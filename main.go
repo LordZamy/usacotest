@@ -17,7 +17,7 @@ func main() {
     cmd := exec.Command(progPath)
     err := cmd.Run()
     if err != nil {
-        color.Red(err.Error())
+        color.Red("Error running program:\n" + err.Error())
         os.Exit(0)
     }
 }
@@ -36,7 +36,7 @@ func initVars() {
     } else {
         x, err := os.Getwd()
         if err != nil {
-            color.Red("Error getting current working directory")
+            color.Red("Error getting current working directory:\n" + err.Error())
             os.Exit(0)
         }
         testDir = x
