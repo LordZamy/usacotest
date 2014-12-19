@@ -1,6 +1,7 @@
 package main
 
 import (
+    "io/ioutil"
     "os"
     "os/exec"
     "github.com/fatih/color"
@@ -40,5 +41,17 @@ func initVars() {
             os.Exit(0)
         }
         testDir = x
+    }
+}
+
+func copyTestData(fileName string) {
+    b, err := ioutil.ReadFile(fileName + ".in")
+    if err != nil {
+        panic(err)
+    }
+
+    err = ioutil.WriteFile(progPath + ".in", b, 0644)
+    if err != nil {
+        panic(err)
     }
 }
