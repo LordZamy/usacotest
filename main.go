@@ -55,3 +55,14 @@ func copyTestData(fileName string) {
         panic(err)
     }
 }
+
+// if outputs are not same, return position of nonequivalence; otherwise return -1
+func compareOutput(a, b []byte) int {
+    fileLen := len(a)
+    for i := 0; i < fileLen; i++ {
+        if a[i] != b[i] {
+            return i
+        }
+    }
+    return -1
+}
