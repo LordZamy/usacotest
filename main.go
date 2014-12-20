@@ -46,8 +46,30 @@ func main() {
             }
             i++
         }
-    }
+    } else if ioStyle == 2 {
+        for {
+            if _, err := os.Stat("I." + strconv.Itoa(i)); os.IsNotExist(err) {
+                // TODO: Add number of total test cases passed
+                color.White("Finished testing")
+                os.Exit(0)
+            }
 
+            copyTestData("I." + strconv.Itoa(i))
+
+            runProgram()
+
+            a := readOutput(progPath + ".out")
+            b := readOutput("O." + strconv.Itoa(i))
+
+            if compareOutput(a, b) != -1 {
+                color.Red("Wrong output at character " + strconv.Itoa(i) + ":\nExpected: " + string(a[i]) + "\tFound: " + string(b[i]))
+            } else {
+                color.Green("Test case " + strconv.Itoa(i) + " passed");
+            }
+            i++
+        }
+
+    }
 }
 
 func initVars() {
