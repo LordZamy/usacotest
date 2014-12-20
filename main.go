@@ -10,10 +10,13 @@ import (
 var (
     progPath string
     testDir string
+    ioStyle int
 )
 
 func main() {
     initVars()
+
+    setIOStyle()
 
     cmd := exec.Command(progPath)
     err := cmd.Run()
@@ -45,7 +48,7 @@ func initVars() {
 }
 
 func copyTestData(fileName string) {
-    b, err := ioutil.ReadFile(fileName + ".in")
+    b, err := ioutil.ReadFile(fileName)
     if err != nil {
         panic(err)
     }
@@ -65,4 +68,21 @@ func compareOutput(a, b []byte) int {
         }
     }
     return -1
+}
+
+func readOutput(fileName string) []byte {
+    b, err := ioutil.ReadFile(fileName)
+    if err != nil {
+        panic(err)
+    }
+    return b
+}
+
+// ioStyle 1 is of form "X.in"; ioStyle 2 is of form "I.X";
+func setIOStyle() {
+    if _, err = os.Stat("1.in"); err == nil {
+        ioStyle = 1
+        return
+    }
+    ioStyle = 2
 }
