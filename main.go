@@ -4,6 +4,7 @@ import (
     "io/ioutil"
     "os"
     "os/exec"
+    "strconv"
     "github.com/fatih/color"
 )
 
@@ -18,12 +19,32 @@ func main() {
 
     setIOStyle()
 
-    cmd := exec.Command(progPath)
-    err := cmd.Run()
-    if err != nil {
-        color.Red("Error running program:\n" + err.Error())
-        os.Exit(0)
+    i := 1
+
+    if ioStyle == 1 {
+        for {
+            if _, err := os.Stat(strconv.Itoa(i) + ".in"); os.IsNotExist(err) {
+                // TODO: Add number of total test cases passed
+                color.White("Finished testing")
+                os.Exit(0)
+            }
+
+            copyTestData(strconv.Itoa(i) + ".in")
+
+            runProgram()
+
+            a := readOutput(progPath + ".out")
+            b := readOutput(strconv.Itoa(i) + ".out")
+
+            if compareOutput(a, b) != -1 {
+                color.Red("Wrong output at character " + strconv.Itoa(i) + ":\nExpected: " + string(a[i]) + "\tFound: " + string(b[i]))
+            } else {
+                color.Green("Test case " + strconv.Itoa(i) + " passed");
+            }
+            i++
+        }
     }
+
 }
 
 func initVars() {
@@ -88,6 +109,15 @@ func setIOStyle() {
         ioStyle = 2
         return
     }
-    color.Red("Could not find test input/ouput files:\n" + err.Error())
+    color.Red("Could not find test input/ouput files")
     os.Exit(0)
+}
+
+func runProgram() {
+    cmd := exec.Command(progPath)
+    err := cmd.Run()
+    if err != nil {
+        color.Red("Error running program:\n" + err.Error())
+        os.Exit(0)
+    }
 }
