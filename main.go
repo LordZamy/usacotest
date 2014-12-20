@@ -40,7 +40,7 @@ func main() {
             b := readOutput(strconv.Itoa(i) + ".out")
 
             if compareOutput(a, b) != -1 {
-                color.Red("Wrong output at character " + strconv.Itoa(i) + ":\nExpected: " + string(a[i]) + "\tFound: " + string(b[i]))
+                color.Red("Wrong output for test case " + strconv.Itoa(i) + ":\nExpected:\n" + string(b[:]) + "Found:\n" + string(a[:]) + "\n")
             } else {
                 color.Green("Test case " + strconv.Itoa(i) + " passed");
             }
@@ -62,7 +62,7 @@ func main() {
             b := readOutput("O." + strconv.Itoa(i))
 
             if compareOutput(a, b) != -1 {
-                color.Red("Wrong output at character " + strconv.Itoa(i) + ":\nExpected: " + string(a[i]) + "\tFound: " + string(b[i]))
+                color.Red("Wrong output for test case " + strconv.Itoa(i) + ":\nExpected:\n" + string(b[:]) + "Found:\n" + string(a[:]) + "\n")
             } else {
                 color.Green("Test case " + strconv.Itoa(i) + " passed");
             }
