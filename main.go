@@ -79,10 +79,15 @@ func readOutput(fileName string) []byte {
 }
 
 // ioStyle 1 is of form "X.in"; ioStyle 2 is of form "I.X";
+// TODO: Change function to check if list of files in "testDir" contains "X.in" or "I.X" files using regex
 func setIOStyle() {
-    if _, err = os.Stat("1.in"); err == nil {
+    if _, err := os.Stat("1.in"); err == nil {
         ioStyle = 1
         return
+    } else if _, err = os.Stat("I.1"); err == nil {
+        ioStyle = 2
+        return
     }
-    ioStyle = 2
+    color.Red("Could not find test input/ouput files:\n" + err.Error())
+    os.Exit(0)
 }
