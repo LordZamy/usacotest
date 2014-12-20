@@ -17,6 +17,9 @@ var (
 func main() {
     initVars()
 
+    // chdir to directory containg test cases
+    os.Chdir(testDir)
+
     setIOStyle()
 
     i := 1
@@ -109,7 +112,7 @@ func setIOStyle() {
         ioStyle = 2
         return
     }
-    color.Red("Could not find test input/ouput files")
+    color.Red("Could not find test input/ouput files in " + testDir)
     os.Exit(0)
 }
 
