@@ -38,7 +38,7 @@ func main() {
 
             runProgram()
 
-            a := readOutput(progPath + ".out")
+            a := readOutput(progName + ".out")
             b := readOutput(strconv.Itoa(i) + ".out")
 
             if compareOutput(a, b) != -1 {
@@ -60,7 +60,7 @@ func main() {
 
             runProgram()
 
-            a := readOutput(progPath + ".out")
+            a := readOutput(progName + ".out")
             b := readOutput("O." + strconv.Itoa(i))
 
             if compareOutput(a, b) != -1 {
@@ -111,7 +111,7 @@ func copyTestData(fileName string) {
         panic(err)
     }
 
-    err = ioutil.WriteFile(progPath + ".in", b, 0644)
+    err = ioutil.WriteFile(progName + ".in", b, 0644)
     if err != nil {
         panic(err)
     }
