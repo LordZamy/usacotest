@@ -5,11 +5,13 @@ import (
     "os"
     "os/exec"
     "strconv"
+    "strings"
     "github.com/fatih/color"
 )
 
 var (
     progPath string
+    progName string
     testDir string
     ioStyle int
 )
@@ -91,6 +93,16 @@ func initVars() {
         }
         testDir = x
     }
+
+    progName = getProgName()
+}
+
+func getProgName() string {
+    pos := strings.LastIndex(progPath, "/")
+    if pos == -1 {
+        pos = strings.LastIndex(progPath, "\\")
+    }
+    return progPath[pos + 1:]
 }
 
 func copyTestData(fileName string) {
