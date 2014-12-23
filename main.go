@@ -21,7 +21,7 @@ var (
 func main() {
     initVars()
 
-    // chdir to directory containg test cases
+    // chdir to directory containing test cases
     os.Chdir(testDir)
 
     setIOStyle()
