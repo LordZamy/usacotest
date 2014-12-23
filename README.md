@@ -1,5 +1,4 @@
 # USACO Test
-=========
 
 Run old USACO contest test cases on your machine from the command-line.
 
