@@ -14,6 +14,7 @@ var (
     progName string
     testDir string
     ioStyle int
+    isPython bool
 )
 
 func main() {
@@ -95,6 +96,11 @@ func initVars() {
     }
 
     progName = getProgName()
+
+    if progName[len(progName) - 3:] == ".py" {
+        isPython = true
+        progName = progName[:len(progName) - 3]
+    }
 }
 
 func getProgName() string {
@@ -159,6 +165,9 @@ func setIOStyle() {
 
 func runProgram() {
     cmd := exec.Command(progPath)
+    if isPython {
+        cmd = exec.Command("python", progPath)
+    }
     err := cmd.Run()
     if err != nil {
         color.Red("Error running program:\n" + err.Error())
