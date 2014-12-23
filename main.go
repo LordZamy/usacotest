@@ -167,6 +167,7 @@ func setIOStyle() {
 func runProgram() time.Duration {
     cmd := exec.Command(progPath)
     if isPython {
+        // TODO: Think of fix for python command name on different OSes (python2, python3)
         cmd = exec.Command("python", progPath)
     }
     timeStart := time.Now()
