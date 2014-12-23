@@ -6,6 +6,7 @@ import (
     "os/exec"
     "strconv"
     "strings"
+    "time"
     "github.com/fatih/color"
 )
 
@@ -37,15 +38,15 @@ func main() {
 
             copyTestData(strconv.Itoa(i) + ".in")
 
-            runProgram()
+            timeElapsed := runProgram()
 
             a := readOutput(progName + ".out")
             b := readOutput(strconv.Itoa(i) + ".out")
 
             if compareOutput(a, b) != -1 {
-                color.Red("Wrong output for test case " + strconv.Itoa(i) + ":\nExpected:\n" + string(b[:]) + "Found:\n" + string(a[:]) + "\n")
+                color.Red("Wrong output for test case %d:\nExpected:\n%sFound:\n%s\n", i, string(b[:]), string(a[:]))
             } else {
-                color.Green("Test case " + strconv.Itoa(i) + " passed");
+                color.Green("Test case %d passed in %.3f seconds", i, timeElapsed.Seconds());
             }
             i++
         }
@@ -59,15 +60,15 @@ func main() {
 
             copyTestData("I." + strconv.Itoa(i))
 
-            runProgram()
+            timeElapsed := runProgram()
 
             a := readOutput(progName + ".out")
             b := readOutput("O." + strconv.Itoa(i))
 
             if compareOutput(a, b) != -1 {
-                color.Red("Wrong output for test case " + strconv.Itoa(i) + ":\nExpected:\n" + string(b[:]) + "Found:\n" + string(a[:]) + "\n")
+                color.Red("Wrong output for test case %d:\nExpected:\n%sFound:\n%s\n", i, string(b[:]), string(a[:]))
             } else {
-                color.Green("Test case " + strconv.Itoa(i) + " passed");
+                color.Green("Test case %d passed in %.3f seconds", i, timeElapsed.Seconds());
             }
             i++
         }
@@ -163,14 +164,17 @@ func setIOStyle() {
     os.Exit(0)
 }
 
-func runProgram() {
+func runProgram() time.Duration {
     cmd := exec.Command(progPath)
     if isPython {
         cmd = exec.Command("python", progPath)
     }
+    timeStart := time.Now()
     err := cmd.Run()
+    timeEnd := time.Now()
     if err != nil {
         color.Red("Error running program:\n" + err.Error())
         os.Exit(0)
     }
+    return timeEnd.Sub(timeStart)
 }
