@@ -38,15 +38,21 @@ func main() {
 
             copyTestData(strconv.Itoa(i) + ".in")
 
-            timeElapsed := runProgram()
+            timeElapsed, err := runProgram()
+
+            if err != nil {
+                color.Red("Error executing test case %d\n%s\n", i, err.Error())
+                i++
+                continue
+            }
 
             a := readOutput(progName + ".out")
             b := readOutput(strconv.Itoa(i) + ".out")
 
             if compareOutput(a, b) != -1 {
-                color.Red("Wrong output for test case %d:\nExpected:\n%sFound:\n%s\n", i, string(b[:]), string(a[:]))
+                color.Red("Wrong output for test case %d:\nExpected:\n%s\nFound:\n%s\n", i, string(b[:]), string(a[:]))
             } else {
-                color.Green("Test case %d passed in %.3f seconds", i, timeElapsed.Seconds());
+                color.Green("Test case %d passed in %.3f seconds\n", i, timeElapsed.Seconds());
             }
             i++
         }
@@ -60,15 +66,21 @@ func main() {
 
             copyTestData("I." + strconv.Itoa(i))
 
-            timeElapsed := runProgram()
+            timeElapsed, err := runProgram()
+
+            if err != nil {
+                color.Red("Error executing test case %d\n%s\n", i, err.Error())
+                i++
+                continue
+            }
 
             a := readOutput(progName + ".out")
             b := readOutput("O." + strconv.Itoa(i))
 
             if compareOutput(a, b) != -1 {
-                color.Red("Wrong output for test case %d:\nExpected:\n%sFound:\n%s\n", i, string(b[:]), string(a[:]))
+                color.Red("Wrong output for test case %d:\nExpected:\n%s\nFound:\n%s\n", i, string(b[:]), string(a[:]))
             } else {
-                color.Green("Test case %d passed in %.3f seconds", i, timeElapsed.Seconds());
+                color.Green("Test case %d passed in %.3f seconds\n", i, timeElapsed.Seconds());
             }
             i++
         }
@@ -164,7 +176,7 @@ func setIOStyle() {
     os.Exit(0)
 }
 
-func runProgram() time.Duration {
+func runProgram() (time.Duration, error) {
     cmd := exec.Command(progPath)
     if isPython {
         // TODO: Think of fix for python command name on different OSes (python2, python3)
@@ -174,8 +186,7 @@ func runProgram() time.Duration {
     err := cmd.Run()
     timeEnd := time.Now()
     if err != nil {
-        color.Red("Error running program:\n" + err.Error())
-        os.Exit(0)
+        return -1, err
     }
-    return timeEnd.Sub(timeStart)
+    return timeEnd.Sub(timeStart), nil
 }
