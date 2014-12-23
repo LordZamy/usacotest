@@ -80,7 +80,7 @@ func initVars() {
     if numArgs >= 2 {
         progPath = os.Args[1]
     } else {
-        color.Red("Please specify exectable as first argument")
+        color.Red("Please specify program path as first argument")
         os.Exit(0)
     }
 
